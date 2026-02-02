@@ -311,4 +311,81 @@
                 const { data: userData, error: userError } = await supabaseClient
                     .from('users')
                     .select('role')
-                    .eq('auth_id
+                    .eq('auth_id', data.user.id)
+                    .single();
+                
+                if (userError) throw userError;
+                
+                // Check if role matches
+                if (userData.role !== role && role !== 'admin') {
+                    throw new Error(`Please login as ${userData.role} instead`);
+                }
+                
+                // Check developer verification
+                if (userData.role === 'developer') {
+                    const { data: devData } = await supabaseClient
+                        .from('developer_profiles')
+                        .select('is_verified')
+                        .eq('user_id', data.user.id)
+                        .single();
+                    
+                    if (!devData?.is_verified) {
+                        throw new Error('Your developer account is not verified yet. Please wait for admin approval.');
+                    }
+                }
+                
+                // Redirect based on role
+                switch(userData.role) {
+                    case 'student':
+                        window.location.href = '/student/student-dashboard.html';
+                        break;
+                    case 'developer':
+                        window.location.href = '/developer/developer-dashboard.html';
+                        break;
+                    case 'admin':
+                        window.location.href = '/admin/admin-dashboard.html';
+                        break;
+                    default:
+                        throw new Error('Invalid user role');
+                }
+                
+            } catch (error) {
+                loading.style.display = 'none';
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+            }
+        });
+        
+        // Check if user is already logged in
+        async function checkExistingSession() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            
+            if (session) {
+                // Get user role
+                const { data: userData } = await supabaseClient
+                    .from('users')
+                    .select('role')
+                    .eq('auth_id', session.user.id)
+                    .single();
+                
+                if (userData) {
+                    // Redirect to appropriate dashboard
+                    switch(userData.role) {
+                        case 'student':
+                            window.location.href = '/student/student-dashboard.html';
+                            break;
+                        case 'developer':
+                            window.location.href = '/developer/developer-dashboard.html';
+                            break;
+                        case 'admin':
+                            window.location.href = '/admin/admin-dashboard.html';
+                            break;
+                    }
+                }
+            }
+        }
+        
+        checkExistingSession();
+    </script>
+</body>
+</html>
