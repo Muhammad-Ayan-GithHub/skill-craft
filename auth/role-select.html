@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Role - SkillCraft</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .logo i {
+            font-size: 3rem;
+            color: #667eea;
+        }
+
+        .logo h1 {
+            font-size: 3rem;
+            color: #333;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            line-height: 1.6;
+        }
+
+        .role-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .role-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 40px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .role-card:hover {
+            transform: translateY(-10px);
+            border-color: #667eea;
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .role-card.selected {
+            border-color: #667eea;
+            background: #f7f9ff;
+            transform: translateY(-5px);
+        }
+
+        .role-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .role-icon i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .role-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .role-desc {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .role-features {
+            list-style: none;
+            text-align: left;
+            width: 100%;
+        }
+
+        .role-features li {
+            padding: 8px 0;
+            color: #555;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .role-features li i {
+            color: #667eea;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f7f9ff;
+            transform: translateY(-3px);
+        }
+
+        .btn-admin {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+            margin-top: 20px;
+        }
+
+        .btn-admin:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(245, 101, 101, 0.4);
+        }
+
+        .admin-note {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff5f5;
+            border-radius: 10px;
+            border-left: 4px solid #f56565;
+        }
+
+        .admin-note p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .role-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <i class="fas fa-laptop-code"></i>
+            <h1>SkillCraft</h1>
+        </div>
+        
+        <p class="subtitle">Select your role to continue. Choose the path that best fits your goals in the coding community.</p>
+        
+        <div class="role-options">
+            <div class="role-card" onclick="selectRole('student')">
+                <div class="role-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h3 class="role-title">Student</h3>
+                <p class="role-desc">Learn coding through real-world tasks assigned by developers</p>
+                <ul class="role-features">
+                    <li><i class="fas fa-check"></i> Get assigned real coding tasks</li>
+                    <li><i class="fas fa-check"></i> Receive expert feedback</li>
+                    <li><i class="fas fa-check"></i> Build your portfolio</li>
+                    <li><i class="fas fa-check"></i> Track your progress</li>
+                </ul>
+            </div>
+            
+            <div class="role-card" onclick="selectRole('developer')">
+                <div class="role-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 class="role-title">Developer</h3>
+                <p class="role-desc">Mentor students and assign real-world coding tasks</p>
+                <ul class="role-features">
+                    <li><i class="fas fa-check"></i> Assign tasks to students</li>
+                    <li><i class="fas fa-check"></i> Review submissions</li>
+                    <li><i class="fas fa-check"></i> Provide feedback</li>
+                    <li><i class="fas fa-check"></i> Write performance reports</li>
+                </ul>
+            </div>
+            
+            <div class="role-card" onclick="selectRole('admin')">
+                <div class="role-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3 class="role-title">Admin</h3>
+                <p class="role-desc">Manage platform users and verify developer accounts</p>
+                <ul class="role-features">
+                    <li><i class="fas fa-check"></i> Verify developers</li>
+                    <li><i class="fas fa-check"></i> View all users</li>
+                    <li><i class="fas fa-check"></i> Monitor platform</li>
+                    <li><i class="fas fa-check"></i> Manage system</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="#" id="loginBtn" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            <a href="#" id="signupBtn" class="btn btn-secondary">
+                <i class="fas fa-user-plus"></i> Sign Up
+            </a>
+        </div>
+        
+        <div class="admin-note">
+            <p><strong>Note:</strong> Admin login has a separate page. If you're an administrator, please use the admin login page directly.</p>
+        </div>
+        
+        <a href="/admin/admin-login.html" class="btn btn-admin">
+            <i class="fas fa-lock"></i> Admin Login
+        </a>
+    </div>
+
+    <script>
+        let selectedRole = 'student';
+        
+        function selectRole(role) {
+            selectedRole = role;
+            
+            // Remove selected class from all cards
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked card
+            event.currentTarget.classList.add('selected');
+            
+            // Store role in localStorage
+            localStorage.setItem('selectedRole', role);
+            
+            // Update button links
+            if (role === 'admin') {
+                document.getElementById('loginBtn').href = '/admin/admin-login.html';
+                document.getElementById('signupBtn').style.display = 'none';
+            } else {
+                document.getElementById('loginBtn').href = `/auth/login.html?role=${role}`;
+                document.getElementById('signupBtn').href = `/auth/signup.html?role=${role}`;
+                document.getElementById('signupBtn').style.display = 'inline-flex';
+            }
+        }
+        
+        // Initialize with student selected
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.role-card')[0].classList.add('selected');
+        });
+    </script>
+</body>
+</html>
